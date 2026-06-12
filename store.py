@@ -1,5 +1,10 @@
 class Store:
-    def __init__(self, products=None):
+    stores = {}
+
+    def __init__(self, name: str, products=None):
+        self.name = name
+        Store.stores[self.name] = self
+        
         if products is None:
             self.products = []
         else:

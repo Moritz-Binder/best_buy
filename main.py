@@ -1,0 +1,105 @@
+import products
+import store
+
+# setup initial stock of inventory
+product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
+                 products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                 products.Product("Google Pixel 7", price=500, quantity=250)
+               ]
+best_buy = store.Store("best_buy", product_list)
+
+def show_products(stores):
+    """
+    Show all products in the store.
+    """
+    products = stores.get_all_products()
+    for product in products:
+        print(product.name)
+    
+    return show_menu_and_get_input(stores)
+
+def show_store_amount(stores):
+    """
+    Show all products in the store.
+    """
+    total_quantity = stores.get_total_quantity()
+    print(total_quantity)
+    
+    return show_menu_and_get_input(stores)
+
+def make_order(stores):
+    """
+    Make an order by asking the user for product names and quantities.
+    """
+    shopping_list = []
+    product_dict = {}
+    products = stores.get_all_products()
+    for key, product in enumerate(products, start=1):
+        product_dict[key] = product
+    while True:
+        print("The store has the following products:")
+        for key, product in product_dict.items():
+            print(key, product.name)
+        product_number = input("Enter product number (or 'done' to finish): ")
+        if product_number.lower() == 'done':
+            break
+        quantity = int(input("Enter quantity: "))
+        shopping_list.append((product_dict[int(product_number)], quantity))
+    
+    total_price = stores.order(shopping_list)
+    print(f"Total price: ${total_price:.2f}")
+    
+    return show_menu_and_get_input(stores)
+
+def show_menu_and_get_input(stores):
+    """
+    Show the menu and get user input.
+    If it's a valid option, return a pointer to the function to execute.
+    Otherwise, keep asking the user for input.
+    """
+    selected_stores = stores
+    print("Menu:")
+    for key, value in FUNCTIONS.items():
+        print(f"{key}. {value[1]}")
+
+    # Input loop
+    while True:
+        try:
+            choice = int(input())
+            if FUNCTIONS[choice][1] == "Exit":
+                print("Goodbye!")
+                return FUNCTIONS[choice][0]
+            elif choice in FUNCTIONS:
+                return FUNCTIONS[choice][0](selected_stores)
+        except ValueError as e:
+            pass
+        print("Try again...")
+
+"""
+Function Dispatch Dictionary
+"""
+FUNCTIONS = { 1: (show_products, "List all products in store"),
+              2: (show_store_amount, "Show total amount in store"),
+              3: (make_order, "Make an order"),
+              4: (quit, "Exit")
+             }
+
+
+def start():
+
+    # The Main Menu loop
+    stores_input = input("Enter the store name: ")
+
+    if stores_input in store.Store.stores.keys():
+        print(f"Welcome to {stores_input}!")
+    else:
+        print(f"Store {stores_input} not found. Exiting...")
+        return
+
+    while True:
+        choice_func = show_menu_and_get_input(store.Store.stores[stores_input])
+        choice_func()
+
+
+if __name__ == "__main__":
+    start()
