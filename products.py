@@ -74,16 +74,16 @@ class Product:
         return total_price
 
 # Unit Tests
-bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-mac = Product("MacBook Air M2", price=1450, quantity=100)
+# bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+# mac = Product("MacBook Air M2", price=1450, quantity=100)
 
-print(bose.buy(50))
-print(mac.buy(100))
-print(mac.is_active())
+# print(bose.buy(50))
+# print(mac.buy(100))
+# print(mac.is_active())
 
-print(bose.show())
-print(mac.show())
+# print(bose.show())
+# print(mac.show())
 
-print(bose.set_quantity(1000))
-print(bose.show())
-print(mac.buy(10))
+# print(bose.set_quantity(1000))
+# print(bose.show())
+# print(mac.buy(10))
